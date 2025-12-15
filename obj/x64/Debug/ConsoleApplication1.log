@@ -1,0 +1,198 @@
+﻿  正在清理远程项目目录
+E:\C++\Download\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: 中间目录(E:\C++\Project\ConsoleApplication1\ConsoleApplication1\obj\x64\Debug\)包含从另一个项目(ConsoleApplication1.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+  正在验证源
+  正在将源远程复制到“192.168.244.128”
+  正在验证体系结构
+  正在验证体系结构
+  正在启动远程生成
+  正在编译源:
+  HttpRequest.cpp
+  HttpServer.cpp
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,43): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,58): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(43,14): error : ‘shared_ptr’ in namespace ‘std’ does not name a template type
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :     4 | #include <functional>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :   +++ |+#include <memory>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :     5 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(35,16): error : class ‘Task<T>’ does not have any field named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(35,34): error : class ‘Task<T>’ does not have any field named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,65): error : class ‘Task<T>’ does not have any field named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,77): error : class ‘Task<T>’ does not have any field named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,81): error : ‘a’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(42,9): error : expected ‘{’ before ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(66,34): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(66,49): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(78,51): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(78,66): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error : ‘arg’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error :    71 |                 task.arg = arg;         //���ò���
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error :       |                            ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error : ‘arg’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error :    79 |                 addTask(Task<T>(f, arg));
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error :       |                                    ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(29,31): error : ‘shared_ptr’ in namespace ‘std’ does not name a template type
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :    12 | #include <unistd.h>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :   +++ |+#include <memory>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :    13 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,30): error : invalid template-id
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,44): error : expected primary-expression before ‘void’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,44): error : expected ‘>’ before ‘void’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,30): error : missing template argument list after ‘std::function’; template placeholder not permitted in parameter
+/usr/include/c++/13/bits/std_function.h(111,11): message : ‘template<class _Signature> class std::function’ declared here
+/usr/include/c++/13/bits/std_function.h(111,11): message :   111 |     class function;
+/usr/include/c++/13/bits/std_function.h(111,11): message :       |           ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(112,53): error : ‘SmartPtr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,28): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,37): error : type/value mismatch at argument 1 in template parameter list for ‘template<class _Signature> class std::function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,37): message : expected a type, got ‘(void)(<expression error>)’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,28): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,37): error : type/value mismatch at argument 1 in template parameter list for ‘template<class _Signature> class std::function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,37): message : expected a type, got ‘(void)(<expression error>)’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,39): error : redeclaration of ‘int ThreadPool<T>::taskCallback’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,39): message : previous declaration ‘int ThreadPool<T>::taskCallback’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error : expected primary-expression before ‘;’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error :   108 |                 taskCallback= callback; //���ⲿ������ߵ�ǰ��������ִ����ɺ󣬽����������taskCallback�У��Ա����ʹ��
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error :       |                                       ^
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error :   117 |                 Task<SmartPtr> task;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error :       |                      ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error :   117 |                 Task<SmartPtr> task;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error :       |                              ^
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error : request for member ‘function’ in ‘task’, which is of non-class type ‘int’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error :   118 |                 task.function = func;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error :       |                      ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error : request for member ‘arg’ in ‘task’, which is of non-class type ‘int’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error :   119 |                 task.arg = arg;//�����������������ü���
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error :       |                      ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error : could not convert ‘((HttpServer*)this)->HttpServer::threadPool_.ThreadPool<Connection>::getPoolStatus()’ from ‘PoolStatus<Connection>’ to ‘PoolStatus<std::shared_ptr<Connection>>’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :    31 |                 return threadPool_.getPoolStatus();
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                        ~~~~~~~~~~~~~~~~~~~~~~~~~^~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                                                 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                                                 PoolStatus<Connection>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(52,29): error : type ‘class std::shared_ptr<Connection>’ argument given to ‘delete’, expected pointer
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(52,29): error :    52 |                 delete pair.second;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(52,29): error :       |                        ~~~~~^~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(219,57): error : cannot convert ‘std::shared_ptr<Connection>’ to ‘int’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(219,57): error :   219 |                                                         conn);
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(219,57): error :       |                                                         ^~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(219,57): error :       |                                                         |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(112,62): message : initializing argument 2 of ‘void ThreadPool<T>::addTask(std::function<void(void*)>, int) [with T = Connection]’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(552,38): error : cannot convert ‘Connection*’ to ‘std::shared_ptr<Connection>’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(552,38): error :   552 |                 this->onTaskComplete(conn);
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(552,38): error :       |                                      ^~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(552,38): error :       |                                      |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(552,38): error :       |                                      Connection*
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.cpp(390,61): message : initializing argument 1 of ‘void HttpServer::onTaskComplete(std::shared_ptr<Connection>)’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(183,30): error : cannot convert ‘std::nullptr_t’ to ‘int’ in assignment
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(183,30): error :   183 |                 taskCallback = nullptr;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(183,30): error :       |                 ~~~~~~~~~~~~~^~~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,34): error : ‘struct Task<Connection>’ has no member named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,34): error :   245 |                         if (task.function && task.arg)
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,34): error :       |                             ~~~~~^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,51): error : ‘struct Task<Connection>’ has no member named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,51): error :   245 |                         if (task.function && task.arg)
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(245,51): error :       |                                              ~~~~~^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,38): error : ‘struct Task<Connection>’ has no member named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,38): error :   247 |                                 task.function(task.arg.get());//����ԭʼָ���������
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,38): error :       |                                 ~~~~~^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,52): error : ‘struct Task<Connection>’ has no member named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,52): error :   247 |                                 task.function(task.arg.get());//����ԭʼָ���������
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(247,52): error :       |                                               ~~~~~^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(251,56): error : ‘struct Task<Connection>’ has no member named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(251,56): error :   251 |                         if (pool->taskCallback && task.arg) {
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(251,56): error :       |                                                   ~~~~~^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(252,57): error : ‘struct Task<Connection>’ has no member named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(252,57): error :   252 |                                 pool->taskCallback(task.arg);//ֱ�Ӵ���SmartPtr����
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(252,57): error :       |                                                    ~~~~~^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(252,51): error : expression cannot be used as a function
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(252,51): error :   252 |
+  main.cpp
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,43): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,58): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(43,14): error : ‘shared_ptr’ in namespace ‘std’ does not name a template type
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :     4 | #include <functional>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :   +++ |+#include <memory>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(5,1): message :     5 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(35,16): error : class ‘Task<T>’ does not have any field named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(35,34): error : class ‘Task<T>’ does not have any field named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,65): error : class ‘Task<T>’ does not have any field named ‘function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,77): error : class ‘Task<T>’ does not have any field named ‘arg’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(41,81): error : ‘a’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(42,9): error : expected ‘{’ before ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(66,34): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(66,49): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(78,51): error : ‘std::shared_ptr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(78,66): error : expected ‘,’ or ‘...’ before ‘<’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error : ‘arg’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error :    71 |                 task.arg = arg;         //���ò���
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(71,28): error :       |                            ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error : ‘arg’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error :    79 |                 addTask(Task<T>(f, arg));
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\TaskQueue.h(79,36): error :       |                                    ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(29,31): error : ‘shared_ptr’ in namespace ‘std’ does not name a template type
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :    12 | #include <unistd.h>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :   +++ |+#include <memory>
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(13,1): message :    13 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,68): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,30): error : invalid template-id
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): error : ‘shared_ptr’ is not a member of ‘std’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,54): message : ‘std::shared_ptr’ is defined in header ‘<memory>’; did you forget to ‘#include <memory>’?
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,44): error : expected primary-expression before ‘void’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,44): error : expected ‘>’ before ‘void’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(107,30): error : missing template argument list after ‘std::function’; template placeholder not permitted in parameter
+/usr/include/c++/13/bits/std_function.h(111,11): message : ‘template<class _Signature> class std::function’ declared here
+/usr/include/c++/13/bits/std_function.h(111,11): message :   111 |     class function;
+/usr/include/c++/13/bits/std_function.h(111,11): message :       |           ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(112,53): error : ‘SmartPtr’ has not been declared
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,28): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,37): error : type/value mismatch at argument 1 in template parameter list for ‘template<class _Signature> class std::function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,37): message : expected a type, got ‘(void)(<expression error>)’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,28): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,37): error : type/value mismatch at argument 1 in template parameter list for ‘template<class _Signature> class std::function’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,37): message : expected a type, got ‘(void)(<expression error>)’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(457,39): error : redeclaration of ‘int ThreadPool<T>::taskCallback’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(187,39): message : previous declaration ‘int ThreadPool<T>::taskCallback’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error : expected primary-expression before ‘;’ token
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error :   108 |                 taskCallback= callback; //���ⲿ������ߵ�ǰ��������ִ����ɺ󣬽����������taskCallback�У��Ա����ʹ��
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(108,39): error :       |                                       ^
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error : ‘SmartPtr’ was not declared in this scope
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error :   117 |                 Task<SmartPtr> task;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,22): error :       |                      ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error : template argument 1 is invalid
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error :   117 |                 Task<SmartPtr> task;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(117,30): error :       |                              ^
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error : request for member ‘function’ in ‘task’, which is of non-class type ‘int’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error :   118 |                 task.function = func;
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(118,22): error :       |                      ^~~~~~~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error : request for member ‘arg’ in ‘task’, which is of non-class type ‘int’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error :   119 |                 task.arg = arg;//�����������������ü���
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\ThreadPool.h(119,22): error :       |                      ^~~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error : could not convert ‘((HttpServer*)this)->HttpServer::threadPool_.ThreadPool<Connection>::getPoolStatus()’ from ‘PoolStatus<Connection>’ to ‘PoolStatus<std::shared_ptr<Connection>>’
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :    31 |                 return threadPool_.getPoolStatus();
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                        ~~~~~~~~~~~~~~~~~~~~~~~~~^~
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                                                 |
+E:\C++\Project\ConsoleApplication1\ConsoleApplication1\HttpServer.h(31,49): error :       |                                                 P

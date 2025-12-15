@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ThreadPool.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpRequest.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:HttpRequest.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:HttpServer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:HttpServer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TaskQueue.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TaskQueue.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Server.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ThreadPool.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Server.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ThreadPool.h",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.h",
+              "RelativeDocumentMoniker": "ThreadPool.h",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.h",
+              "RelativeToolTip": "ThreadPool.h",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-25T02:08:37.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ThreadPool.cpp",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.cpp",
+              "RelativeDocumentMoniker": "ThreadPool.cpp",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\ThreadPool.cpp",
+              "RelativeToolTip": "ThreadPool.cpp",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAIwOEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-25T02:08:36.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TaskQueue.h",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.h",
+              "RelativeDocumentMoniker": "TaskQueue.h",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.h",
+              "RelativeToolTip": "TaskQueue.h",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAACcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-25T02:08:24.234Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "TaskQueue.cpp",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.cpp",
+              "RelativeDocumentMoniker": "TaskQueue.cpp",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\TaskQueue.cpp",
+              "RelativeToolTip": "TaskQueue.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-25T01:18:48.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HttpServer.h",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.h",
+              "RelativeDocumentMoniker": "HttpServer.h",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.h",
+              "RelativeToolTip": "HttpServer.h",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-21T08:21:01.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HttpServer.cpp",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.cpp",
+              "RelativeDocumentMoniker": "HttpServer.cpp",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpServer.cpp",
+              "RelativeToolTip": "HttpServer.cpp",
+              "ViewState": "AgIAAFsAAAAAAAAAAADwv18AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-21T09:09:19.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HttpRequest.h",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpRequest.h",
+              "RelativeDocumentMoniker": "HttpRequest.h",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\HttpRequest.h",
+              "RelativeToolTip": "HttpRequest.h",
+              "ViewState": "AgIAABYAAAAAAAAAAAAAABoAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-21T07:33:47.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Server.h",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.h",
+              "RelativeDocumentMoniker": "Server.h",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.h",
+              "RelativeToolTip": "Server.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-21T06:48:26.018Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Server.c",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.c",
+              "RelativeDocumentMoniker": "Server.c",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\Server.c",
+              "RelativeToolTip": "Server.c",
+              "ViewState": "AgIAAAYAAAAAAAAAAADwv7gCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-09-21T06:48:14.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "main.cpp",
+              "DocumentMoniker": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\main.cpp",
+              "RelativeDocumentMoniker": "main.cpp",
+              "ToolTip": "E:\\C\u002B\u002B\\Project\\ConsoleApplication1\\ConsoleApplication1\\main.cpp",
+              "RelativeToolTip": "main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-21T06:46:38.742Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
