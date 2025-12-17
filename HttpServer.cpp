@@ -214,7 +214,7 @@ void HttpServer::run()
 						threadPool_.addTask([this](void* arg) //值捕获，引用计数=4
 							{
 								Connection* conn = static_cast<Connection*>(arg);
-								this->processRequest(this,conn);
+								this->processRequest(conn);
 							},
 							conn);
 					}
@@ -303,8 +303,7 @@ void HttpServer::acceptNewConnection()
 	std::cout << "===离开 acceptNewConnection ===" << std::endl;
 }
 
-void HttpServer::processRequest(HttpServer* server,void* arg) {
-	Connection* conn = static_cast<Connection*>(arg);
+void HttpServer::processRequest(Connection* conn) {
 	HttpRequest& req = conn->request;
 
 	//处理管理接口
@@ -332,7 +331,7 @@ void HttpServer::processRequest(HttpServer* server,void* arg) {
 	std::cout << "解码后URL:" << decodeUrl << std::endl;
 
 	//构建完整路径
-	std::string fullpath = server->baseDir_;
+	std::string fullpath = baseDir_;
 	if (decodeUrl == "/" || decodeUrl.empty()) {
 		//使用基目录
 		fullpath += "/index.html";
@@ -346,13 +345,13 @@ void HttpServer::processRequest(HttpServer* server,void* arg) {
 	//使用realpath规范化路径
 	char resolved_path[PATH_MAX];
 	if (realpath(fullpath.c_str(), resolved_path) == NULL) {
-		server->sendErrorResponse(conn->fd, 404, "Not Found");
+		sendErrorResponse(conn->fd, 404, "Not Found");
 		return;
 	}
 
 	//检查路径遍历攻击
-	if (strncmp(resolved_path, server->baseDir_.c_str(),server->baseDir_.length()) != 0) {
-		server->sendErrorResponse(conn->fd, 403, "Forbidden");
+	if (strncmp(resolved_path, baseDir_.c_str(),baseDir_.length()) != 0) {
+		sendErrorResponse(conn->fd, 403, "Forbidden");
 		return;
 	}
 
@@ -360,13 +359,13 @@ void HttpServer::processRequest(HttpServer* server,void* arg) {
 	struct stat st;
 	if (stat(resolved_path, &st) == -1) {
 		//尝试发送404页面
-		std::string not_found_path = server->baseDir_ + "/404.html";
+		std::string not_found_path = baseDir_ + "/404.html";
 		if (access(not_found_path.c_str(), R_OK) == 0) {
 			server->sendFile(not_found_path, conn->fd);
 		}
 		else
 		{
-			server->sendErrorResponse(conn->fd, 404, "Not Found");
+			sendErrorResponse(conn->fd, 404, "Not Found");
 		}
 		return;
 	}
@@ -374,14 +373,14 @@ void HttpServer::processRequest(HttpServer* server,void* arg) {
 	{
 		if (S_ISDIR(st.st_mode))
 		{
-			server->sendDir(resolved_path, decodeUrl, conn->fd);
+			sendDir(resolved_path, decodeUrl, conn->fd);
 		}
 		else
 		{
 			//发送文件前先发送HTTP头部
-			std::string fileType = server->getFileType(resolved_path);
-			server->sendHeadMsg(conn->fd, 200, "OK", fileType, static_cast<int>(st.st_size));
-			server->sendFile(resolved_path, conn->fd);
+			std::string fileType = getFileType(resolved_path);
+			sendHeadMsg(conn->fd, 200, "OK", fileType, static_cast<int>(st.st_size));
+			sendFile(resolved_path, conn->fd);
 		}
 		return;
 	}

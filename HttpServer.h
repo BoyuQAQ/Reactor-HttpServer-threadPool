@@ -26,7 +26,7 @@ public:
 	void setThreadPoolSize(int minThreads, int maxThreads);
 
 	//添加状态查询接口
-	ThreadPool<std::shared_ptr<Connection>>::PoolStatus getThreadPoolStatus()
+	ThreadPool<Connection>::PoolStatus getThreadPoolStatus()
 	{
 		return threadPool_.getPoolStatus();
 	}
@@ -46,7 +46,7 @@ private:
 	void acceptNewConnection();
 
 	//处理HTTP请求(在线程池中执行)
-	void processRequest(HttpServer* server,void* arg);
+	void processRequest(Connection* conn);
 
 	//发送响应
 	void sendResponse(int cfd, int status, const std::string& content);
@@ -68,7 +68,7 @@ private:
 	bool running_;
 
 	//线程池
-	ThreadPool<std::shared_ptr<Connection>> threadPool_;//T=Connection
+	ThreadPool<Connection> threadPool_;//T=Connection
 
 	//连接管理
 	std::map<int, std::shared_ptr<Connection>> connections_;

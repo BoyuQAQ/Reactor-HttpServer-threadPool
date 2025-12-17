@@ -10,6 +10,7 @@
 #include <ctime>
 #include <functional>
 #include <unistd.h>
+#include <memory>
 
 template<class T>
 class ThreadPool

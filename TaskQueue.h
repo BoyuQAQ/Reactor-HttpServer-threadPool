@@ -1,7 +1,7 @@
 #pragma once 
 #include <queue>
-#include <pthread.h>
 #include <functional>
+#include <memory>
 
 
 
@@ -39,7 +39,7 @@ struct Task
 	//Task(std::function<void(void*)>f,void* arg):function(f),arg(static_cast<T*>(arg)){}
 
 	Task(std::function<void(void*)> f,std::shared_ptr<T> a):function(f),arg(a){}
-	std::function<void(void*)>function;
+	std::function<void(void*)>function; 
 	std::shared_ptr<T> arg;
 };
 
