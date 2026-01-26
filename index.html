@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的云盘</title>
+    <style>
+        /* 简单美化，提高可读性 */
+        body { font-family: sans-serif; padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .file-list { margin-top: 20px; }
+        .file-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px; 
+            border-bottom: 1px solid #f0f0f0; 
+            cursor: pointer;
+        }
+        .file-item:hover { background-color: #f9f9f9; }
+        .icon { margin-right: 10px; width: 20px; display: inline-block; text-align: center; }
+        .dir-name { color: #007bff; font-weight: bold; }
+        .file-name { color: #333; }
+        .file-size { color: #888; font-size: 0.9em; }
+        #status { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>文件列表</h1>
+    <div id="status">准备就绪</div>
+    <div id="file-list" class="file-list"></div>
+</div>
+
+<script>
+    // 定义 DOM 元素
+    const listDiv = document.getElementById('file-list');
+    const statusDiv = document.getElementById('status');
+
+    // [格式化工具] 提升用户体验
+    function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // [核心逻辑] 加载数据函数
+    function loadFiles() {
+        statusDiv.innerText = "正在请求服务器数据...";
+
+        // [健壮性] 使用 fetch API 发起异步请求
+        // 这一步会让浏览器向你的 C++ 服务器发送 GET /api/list
+        fetch('/api/list')
+            .then(response => {
+                // [健壮性] 检查网络状态码
+                // 如果服务器返回 500 或 404，这里会抛出错误，防止处理无效数据
+                if (!response.ok) {
+                    throw new Error("HTTP 错误 " + response.status);
+                }
+                return response.json(); // 解析 JSON
+            })
+            .then(data => {
+                console.log("收到数据:", data); // 调试用
+                statusDiv.innerText = "加载完成 (共 " + data.length + " 个文件)";
+                listDiv.innerHTML = ""; // 清空当前列表
+
+                // [可维护性] 数据驱动视图
+                // 我们遍历数据数组，动态生成 HTML 元素
+                data.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'file-item';
+
+                    // 1. 创建左侧名称区域
+                    const left = document.createElement('div');
+                    
+                    // 设置图标
+                    const icon = document.createElement('span');
+                    icon.className = 'icon';
+                    icon.innerText = item.type === 'dir' ? '📁' : '📄';
+                    
+                    // 设置文件名
+                    const nameSpan = document.createElement('span');
+                    
+                    // [安全性 - 极其重要] !!!
+                    // 即使后端做了转义，前端也要防守。
+                    // 绝对不要使用 innerHTML = item.name (这会导致 XSS 攻击)
+                    // 必须使用 innerText 或 textContent，浏览器会把所有字符当作纯文本显示。
+                    nameSpan.innerText = item.name; 
+                    nameSpan.className = item.type === 'dir' ? 'dir-name' : 'file-name';
+
+                    left.appendChild(icon);
+                    left.appendChild(nameSpan);
+
+                    // 2. 创建右侧大小区域
+                    const right = document.createElement('div');
+                    right.className = 'file-size';
+                    right.innerText = item.type === 'dir' ? '-' : formatBytes(item.size);
+
+                    // 3. 组装
+                    row.appendChild(left);
+                    row.appendChild(right);
+
+                    // 4. 添加点击事件 (简单跳转)
+                    row.onclick = () => {
+                        if (item.type === 'file') {
+                            // 如果是文件，直接在当前页打开/下载
+                            window.location.href = item.name;
+                        } else {
+                            alert("进入子目录功能需要在后端支持 ?dir= 参数，目前仅演示列表功能");
+                        }
+                    };
+
+                    // 5. 挂载到页面
+                    listDiv.appendChild(row);
+                });
+            })
+            .catch(error => {
+                // [健壮性] 错误捕获
+                // 如果发生网络断开、服务器崩溃或 JSON 格式错误，会走到这里
+                console.error("加载失败:", error);
+                statusDiv.innerText = "加载失败: " + error.message;
+                statusDiv.style.color = "red";
+            });
+    }
+
+    // 页面加载完成后立即执行一次
+    loadFiles();
+
+    // [功能扩展] 如果你想看 epoll 不断工作的效果，取消下面这行的注释
+    // setInterval(loadFiles, 5000); // 每5秒刷新一次
+</script>
+
+</body>
+</html>
