@@ -305,8 +305,9 @@ void HttpServer::acceptNewConnection()
 	std::cout << "===离开 acceptNewConnection ===" << std::endl;
 }
 
-void HttpServer::sendDirectoryJson(const std::string& dirPath, int cfd)
+void HttpServer::sendDirectoryJson(const std::string& dirPath, int cfd)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 {
+	std::cout << "DEBUG: 正在尝试打开目录: " << dirPath << std::endl;
 	//1.打开目录
 	DIR* dir = opendir(dirPath.c_str());
 	if (dir == nullptr)
@@ -320,8 +321,8 @@ void HttpServer::sendDirectoryJson(const std::string& dirPath, int cfd)
 	//2.创建一个JSON数组对象
 	//【可维护性】这里不在拼接字符串，而是像操作数组一样操作json对象
 	json jsonArray = json::array();
-
 	struct dirent* entry;
+
 	while ((entry = readdir(dir)) != NULL) {
 		std::string name = entry->d_name;
 
@@ -390,7 +391,7 @@ void HttpServer::processRequest(Connection* conn) {
 		sendResponse(conn->fd, 200, jsonBody, "application/json");
 		return;
 	}
-	
+
 	//URL解码
 	std::string decodeUrl;
 	HttpRequest::urlDecode(decodeUrl, req.url);
@@ -398,74 +399,112 @@ void HttpServer::processRequest(Connection* conn) {
 
 	//1.【新增】处理API请求
 	//浏览器JS会请求http://ip:port/api/list?dir=/
-	if (decodeUrl.find("/api/list") == 0) {
+	if (decodeUrl.find("/api/list") == 0)
+	{
 		std::cout << "收到目录列表API请求" << std::endl;
 
-		//列出服务器根目录baseDir_
-		//未来可以解析decodeUrl里的参数来实现子目录访问
-		sendDirectoryJson(baseDir_, conn->fd);
+		//1.解析参数 ?dir=
+		std::string relativePath = "/";//默认为根
+		size_t queryPos = decodeUrl.find("?");
+		if (queryPos != std::string::npos) {
+			//提取query字符串，例如:dir=/test/data
+			std::string query = decodeUrl.substr(queryPos + 1);
+			//简单的查找 dir=
+			size_t dirPos = query.find("dir=");
+			if (dirPos != std::string::npos)
+			{
+				//提取dir=后面内容，实际生产中可能需要多个参数(&分割)
+				relativePath = query.substr(dirPos + 4);
+			}
+		}
+			//组合绝对路径，将前端传过来的和服务器根目录进行结合，同时判断/的位置是否正确，如果没有需要补上
+			if (!relativePath.empty() && relativePath.front() != '/')
+			{
+				relativePath = '/' + relativePath;
+			}
+			std::string targetDir = baseDir_ + relativePath;
 
-		return;//[控制流]处理完API后直接返回，不再执行后面静态文件的逻辑
-	}
+			//使用realpath规范化路径
+			char resolved_path[PATH_MAX];
+			if (realpath(targetDir.c_str(), resolved_path) == NULL) {
+				cout << "resolved_path路径失败resolved_path:" << resolved_path << endl;
+				perror("realpath");
+				sendResponse(conn->fd, 404, "[]", "application/json");
+				return;
+			}
 
-	//构建完整路径
-	std::string fullpath = baseDir_;
-	if (decodeUrl == "/" || decodeUrl.empty()) {
-		//使用基目录
-		fullpath += "/index.html";
-		std::cout << "使用默认文件:" << fullpath << std::endl;
-	}
-	else {
-		fullpath += decodeUrl;
-		std::cout << "完整路径:" << fullpath << std::endl;
-	}
-	
-	//使用realpath规范化路径
-	char resolved_path[PATH_MAX];
-	if (realpath(fullpath.c_str(), resolved_path) == NULL) {
-		cout << "resolved_path路径失败resolved_path:" <<resolved_path<< endl;
-		perror("realpath");
-		sendErrorResponse(conn->fd, 404, "Not Found");
-		return;
-	}
+			//检查路径遍历攻击
+			std::string finalPath(resolved_path);
+			if (finalPath.compare(0, baseDir_.size(), baseDir_) != 0)
+			{
+				sendErrorResponse(conn->fd, 403, "Forbidden");
+				return;
+			}
+			std::cout << "API请求子目录:" << finalPath << endl;
 
-	//检查路径遍历攻击
-	if (strncmp(resolved_path, baseDir_.c_str(),baseDir_.length()) != 0) {
-		sendErrorResponse(conn->fd, 403, "Forbidden");
-		return;
+			//列出服务器根目录baseDir_
+			//未来可以解析decodeUrl里的参数来实现子目录访问
+			sendDirectoryJson(finalPath, conn->fd);
+			return;
 	}
-
-	//获取文件属性
-	struct stat st;
-	if (stat(resolved_path, &st) == -1) {
-		//尝试发送404页面
-		std::string not_found_path = baseDir_ + "/404.html";
-		if (access(not_found_path.c_str(), R_OK) == 0) {
-			sendFile(not_found_path, conn->fd);
+		std::string fullpath = baseDir_;
+		//构建完整路径
+		if (decodeUrl == "/" || decodeUrl.empty())
+		{
+			std::string defaultFile = baseDir_ + "/index.html";
+			if (access(defaultFile.c_str(), F_OK) == 0)
+			{
+				fullpath = defaultFile;
+			}
 		}
 		else
 		{
-			cout << "读写文件属性失败" << endl;
-			sendErrorResponse(conn->fd, 404, "Not Found");
+			fullpath += decodeUrl;
 		}
-		return;
-	}
-	else if(access(resolved_path, F_OK)==0)
-	{
-		if (S_ISDIR(st.st_mode))
+
+		//2.安全检查
+		char resolved_path[PATH_MAX];
+		if (realpath(fullpath.c_str(), resolved_path) == NULL)
+		{
+			perror("realpath");
+			sendErrorResponse(conn->fd, 404, "Not Found");
+			return;
+		}
+
+		if (strncmp(resolved_path, baseDir_.c_str(), baseDir_.length()) != 0)
+		{
+			sendErrorResponse(conn->fd, 403, "Forbidden");
+			return;
+		}
+
+		//获取文件属性
+		struct stat st;
+		if (stat(resolved_path, &st) == -1) {
+			//尝试发送404页面
+			std::string not_found_path = baseDir_ + "/404.html";
+			if (access(not_found_path.c_str(), R_OK) == 0) {
+				sendFile(not_found_path, conn->fd);
+			}
+			else
+			{
+				cout << "读写文件属性失败" << endl;
+				sendErrorResponse(conn->fd, 404, "Not Found");
+			}
+			return;
+		}
+		else if (S_ISDIR(st.st_mode))
 		{
 			sendDir(resolved_path, decodeUrl, conn->fd);
 		}
 		else
-		{
-			//发送文件前先发送HTTP头部
-			std::string fileType = getFileType(resolved_path);
-			sendFile(resolved_path, conn->fd);
-		}
+			{
+				//发送文件前先发送HTTP头部
+				std::string fileType = getFileType(resolved_path);
+				sendFile(resolved_path, conn->fd);
+			}
 		return;
-	}
 }
- 
+
 void HttpServer::sendResponse(int cfd, int status, const std::string& content, const std::string& contentType)
 {
 	//根据状态码确定状态描述
