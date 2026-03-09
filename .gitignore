@@ -1,0 +1,6 @@
+build/
+build1/
+*/.log
+*.o
+tc_http_server
+.vs/

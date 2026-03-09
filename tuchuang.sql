@@ -1,10 +1,10 @@
 #数据库表
 #创建数据库
-DROP DATABASE IF EXISTS `0voice_tuchuang`;
-CREATE DATABASE `0voice_tuchuang`;
+DROP DATABASE IF EXISTS `cloud_disk_db`;
+CREATE DATABASE `cloud_disk_db`;
 
 #使用数据库
-use `0voice_tuchuang`;
+use `cloud_disk_db`;
 
 
 DROP TABLE IF EXISTS `file_info`;
