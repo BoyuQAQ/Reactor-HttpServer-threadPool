@@ -1,4 +1,4 @@
-#ifndef _API_DEALFILE_H_
+﻿#ifndef _API_DEALFILE_H_
 #define _API_DEALFILE_H_
 #include <string>
 using std::string;

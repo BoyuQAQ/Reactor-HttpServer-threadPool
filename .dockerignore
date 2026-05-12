@@ -1,0 +1,58 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vs
+.vscode
+*.idea
+*.swp
+*.swo
+
+# 构建产物
+build/
+build1/
+out/
+obj/
+
+# 临时文件
+*.log
+*.tmp
+*.bak
+*~
+
+# 数据目录
+data/
+backups/
+logs/
+
+# 文档（减小构建上下文）
+*.md
+!README.md
+docs/
+
+# AI 源码目录（不需要参与构建）
+AI_YunCunChu-main/src_cgi/
+AI_YunCunChu-main/common/
+AI_YunCunChu-main/include/
+AI_YunCunChu-main/deps/
+AI_YunCunChu-main/conf/
+
+# Node 模块（前端单独构建）
+AI_YunCunChu-main/picture_bed/node_modules/
+AI_YunCunChu-main/picture_bed/build/
+
+# MySQL 数据（运行时挂载）
+*.sql
+!tuchuang.sql
+
+# 环境文件（通过 docker-compose 传入）
+.env
+.env.*
+!.env.example
+
+# 其他
+*.zip
+*.tar.gz
+.DS_Store
+Thumbs.db

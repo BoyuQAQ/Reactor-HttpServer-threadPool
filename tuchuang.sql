@@ -83,3 +83,50 @@ CREATE TABLE `user_info` (
   UNIQUE KEY `uq_nick_name` (`nick_name`),
   UNIQUE KEY `uq_user_name` (`user_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+DROP TABLE IF EXISTS `file_ai_desc`;
+CREATE TABLE `file_ai_desc` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `md5` varchar(256) NOT NULL COMMENT '文件MD5（唯一索引）',
+  `description` text COMMENT 'AI生成的文件描述',
+  `embedding` mediumblob COMMENT '1024维float向量（4096字节）',
+  `faiss_id` int(11) DEFAULT NULL COMMENT 'FAISS索引中的ID',
+  `model` varchar(64) DEFAULT '' COMMENT '使用的AI模型名',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态：0=待处理 1=完成 2=失败',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_md5` (`md5`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='AI文件描述与向量表';
+
+DROP TABLE IF EXISTS `share_picture_list`;
+CREATE TABLE `share_picture_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `user` varchar(32) NOT NULL COMMENT '文件所属用户',
+  `filemd5` varchar(256) NOT NULL COMMENT '文件md5',
+  `file_name` varchar(128) DEFAULT NULL COMMENT '文件名字',
+  `urlmd5` varchar(256) NOT NULL COMMENT '图床urlmd5',
+  `key` varchar(8) NOT NULL COMMENT '提取码',
+  `pv` int(11) DEFAULT '1' COMMENT '文件下载量，默认值为1，下载一次加1',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文件创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图床文件列表';
+
+CREATE TABLE IF NOT EXISTS share_picture_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user VARCHAR(128) NOT NULL,
+    filemd5 VARCHAR(128) NOT NULL,
+    file_name VARCHAR(256) NOT NULL,
+    urlmd5 VARCHAR(128) NOT NULL UNIQUE,
+    `key` VARCHAR(16) NOT NULL,
+    pv INT DEFAULT 0,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS file_ai_desc (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    md5 VARCHAR(128) NOT NULL UNIQUE,
+    description TEXT COMMENT 'AI生成的摘要内容',
+    faiss_id INT DEFAULT -1 COMMENT 'Faiss向量库索引ID',
+    status INT DEFAULT 0 COMMENT '处理状态(1为已处理)',
+    file_name VARCHAR(256) DEFAULT ''
+);

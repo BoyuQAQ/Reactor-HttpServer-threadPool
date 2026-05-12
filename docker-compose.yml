@@ -1,0 +1,269 @@
+version: '3.8'
+
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: tc_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./tuchuang.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./logs/mysql:/var/log/mysql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u root -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # Redis 缓存（开启持久化）
+  redis:
+    image: redis:7-alpine
+    container_name: tc_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --maxmemory 128mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+      - ./logs/redis:/var/log/redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # FastDFS Tracker
+  fastdfs-tracker:
+    image: season/fastdfs:1.2
+    container_name: tc_fastdfs_tracker
+    restart: unless-stopped
+    environment:
+      - TRACKER_SERVER=fastdfs-tracker:22122
+    volumes:
+      - fastdfs_tracker_data:/fastdfs/tracker
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    command: tracker
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22122"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # FastDFS Storage
+  fastdfs-storage:
+    image: season/fastdfs:1.2
+    container_name: tc_fastdfs_storage
+    restart: unless-stopped
+    environment:
+      - TRACKER_SERVER=fastdfs-tracker:22122
+      - GROUP_NAME=group1
+    volumes:
+      - fastdfs_storage_data:/fastdfs/storage
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      fastdfs-tracker:
+        condition: service_healthy
+    command: storage
+    healthcheck:
+      test: ["CMD-SHELL", "fdfs_monitor /etc/fdfs/client.conf | grep -q 'Active'"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 40s
+
+  # Nginx 反向代理 + FastDFS 模块
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: tc_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_tmp:/tmp/nginx_tmp
+      - nginx_static:/usr/share/nginx/html:ro
+      - ./logs/nginx:/var/log/nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:size=10M
+      - /var/run:size=1M
+    depends_on:
+      fastdfs-storage:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # C++ 后端服务
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      args:
+        DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+    container_name: tc_backend
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - FASTDFS_TRACKER=fastdfs-tracker:22122
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-}
+      - WAIT_DEPENDENCIES=${WAIT_DEPENDENCIES:-true}
+    volumes:
+      - backend_conf:/app/conf:ro
+      - backend_html:/app/html:ro
+      - backend_chunks:/tmp/chunks
+      - backend_logs:/app/log
+      - ./logs/backend:/app/log:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+    user: "1000:1000"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      fastdfs-storage:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8081/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # React 前端构建（构建后退出，产物复制到 nginx）
+  frontend:
+    build:
+      context: ./AI_YunCunChu-main/picture_bed
+      dockerfile: ../Dockerfile.frontend
+    container_name: tc_frontend
+    restart: "no"
+    volumes:
+      - nginx_static:/app/build
+    networks:
+      - tc_net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  tc_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+volumes:
+  mysql_data:
+  redis_data:
+  fastdfs_tracker_data:
+  fastdfs_storage_data:
+  nginx_tmp:
+  nginx_static:
+  backend_logs:
+  backend_conf:
+  backend_html:
+  backend_chunks:

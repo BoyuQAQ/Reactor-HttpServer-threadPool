@@ -1,0 +1,35 @@
+{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": ""
+    },
+    {
+        "name": "Linux-GCC-Debug",
+        "generator": "Ninja",
+        "configurationType": "Debug",
+        "cmakeExecutable": "cmake",
+        "remoteCopySourcesExclusionList": [ ".vs", ".git", "out" ],
+        "cmakeCommandArgs": "",
+        "buildCommandArgs": "",
+        "ctestCommandArgs": "",
+        "inheritEnvironments": [ "linux_x64" ],
+        "remoteMachineName": "1926980009;192.168.244.128 (username=boyu, port=22, authentication=Password)",
+        "remoteCMakeListsRoot": "/mnt/newdisk/cpp_project/src/tcp_epoll/Reactor_server_under_threadpool/reactor+http/picture_bed",
+        "remoteBuildRoot": "/mnt/newdisk/cpp_project/src/tcp_epoll/Reactor_server_under_threadpool/reactor+http/picture_bed/build/${name}",
+        "remoteInstallRoot": "/mnt/newdisk/cpp_project/src/tcp_epoll/Reactor_server_under_threadpool/reactor+http/picture_bed/out/install/${name}",
+        "remoteCopySources": true,
+        "rsyncCommandArgs": "-t --delete",
+        "remoteCopyBuildOutput": false,
+        "remoteCopySourcesMethod": "rsync",
+        "variables": []
+    }
+  ]
+}

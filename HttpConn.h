@@ -1,4 +1,4 @@
-/*
+﻿/*
  * HttpConn.h
  *
  *  Created on: 2013-9-29
@@ -24,7 +24,7 @@
                                     "Content-Length:%d\r\n"\
                                     "Content-Type:application/json;charset=utf-8\r\n\r\n%s"
                                     
-#define HTTP_RESPONSE_HTML_MAX      4096
+#define HTTP_RESPONSE_HTML_MAX      1048576 
 
 
 extern ThreadPool g_thread_pool;
@@ -77,10 +77,18 @@ private:
     int _HandleMd5Request(string& url, string& post_data);
     // 
     int _HandleMyfilesRequest(string& url, string& post_data);
+    //
+    int _HandleAiRequest(string& url, string& post_data);
+    //
+    int _HandleChunkRequest(string& url, string& post_data);
+    //
+    int _HandleSharepicExRequest(string& url, string& post_data);
     // 
     int _HandleSharefilesRequest(string& url, string& post_data);
-    // 
+//
     int _HandleSharepictureRequest(string& url, string& post_data);
+    // 健康检查
+    int _HandleHealthRequest(string& url, string& post_data);
 protected:
 	net_handle_t	m_sock_handle;
 	uint32_t		m_conn_handle;

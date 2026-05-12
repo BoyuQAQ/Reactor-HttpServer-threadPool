@@ -19,6 +19,9 @@
 #include "ApiSharepicture.h"
 #include "ApiMd5.h"
 #include "ApiUpload.h"
+#include "ApiAi.h"
+#include "ApiChunk.h"
+#include "ApiSharepicEx.h"
 static HttpConnMap_t g_http_conn_map;
 
 extern string strMsfsUrl;
@@ -269,6 +272,22 @@ void CHttpConn::OnRead() // CHttpConn业务层面的OnRead
 		{ // 上传
 			_HandleUploadRequest(url, content);
 		}
+		else if (strncmp(url.c_str(), "/api/ai", 7) == 0)
+		{ // AI功能
+			_HandleAiRequest(url, content);
+		}
+		else if (strncmp(url.c_str(), "/api/chunk", 10) == 0)
+		{ // 分片上传
+			_HandleChunkRequest(url, content);
+		}
+		else if (strncmp(url.c_str(), "/api/sharepic", 13) == 0)
+		{ // 图床分享
+			_HandleSharepicExRequest(url, content);
+		}
+		else if (strncmp(url.c_str(), "/api/health", 12) == 0)
+		{ // 健康检查
+			_HandleHealthRequest(url, content);
+		}
 		else
 		{
 			LOG_ERROR << "url unknown, url= " << url;
@@ -405,8 +424,19 @@ int CHttpConn::_HandleLoginRequest(string &url, string &post_data)
 	uint32_t nLen = str_json.length();
 	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());
 	CHttpConn::AddResponseData(m_uuid, szContent);
-	delete szContent;
+	delete[] szContent;
 
+	return 0;
+}
+
+int CHttpConn::_HandleHealthRequest(string &url, string &post_data)
+{
+	string str_json = "{\"code\": 200, \"status\": \"ok\", \"message\": \"service healthy\"}";
+	char *szContent = new char[HTTP_RESPONSE_HTML_MAX];
+	uint32_t nLen = str_json.length();
+	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());
+	CHttpConn::AddResponseData(m_uuid, szContent);
+	delete[] szContent;
 	return 0;
 }
 
@@ -477,6 +507,42 @@ int CHttpConn::_HandleSharepictureRequest(string &url, string &post_data)
 {
 	string str_json;
 	int ret = ApiSharepicture(url, post_data, str_json);
+	char *szContent = new char[HTTP_RESPONSE_HTML_MAX];
+	uint32_t nLen = str_json.length();
+	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());
+	ret = Send((void *)szContent, strlen(szContent));
+	delete [] szContent;
+	return 0;
+}
+
+int CHttpConn::_HandleAiRequest(string &url, string &post_data)
+{
+	string str_json;
+	int ret = ApiAi(url, post_data, str_json);
+	char *szContent = new char[HTTP_RESPONSE_HTML_MAX];
+	uint32_t nLen = str_json.length();
+	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());
+	ret = Send((void *)szContent, strlen(szContent));
+	delete [] szContent;
+	return 0;
+}
+
+int CHttpConn::_HandleChunkRequest(string &url, string &post_data)
+{
+	string str_json;
+	int ret = ApiChunk(url, post_data, str_json);
+	char *szContent = new char[HTTP_RESPONSE_HTML_MAX];
+	uint32_t nLen = str_json.length();
+	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());
+	ret = Send((void *)szContent, strlen(szContent));
+	delete [] szContent;
+	return 0;
+}
+
+int CHttpConn::_HandleSharepicExRequest(string &url, string &post_data)
+{
+	string str_json;
+	int ret = ApiSharepicEx(url, post_data, str_json);
 	char *szContent = new char[HTTP_RESPONSE_HTML_MAX];
 	uint32_t nLen = str_json.length();
 	snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, nLen, str_json.c_str());

@@ -1,0 +1,157 @@
+# C++ 后端服务 Dockerfile
+# 优化版：分层缓存 + 健康检查 + 启动等待 + 路径健壮性
+
+# ========== 构建参数（可从外部传入）==========
+ARG BUILD_DIR=build
+ARG PROJECT_NAME=tc_http_server
+ARG SOURCE_DIR=/build/picture_bed
+
+# ========== Stage 1: 预安装依赖（变化频率最低，利用缓存）==========
+FROM ubuntu:22.04 AS deps
+
+ARG BUILD_DIR
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    wget \
+    libfastdfs-dev \
+    libfastcommon-dev \
+    libmysqlclient-dev \
+    libhiredis-dev \
+    libcurl4-openssl-dev \
+    libjsoncpp-dev \
+    libfaiss-dev \
+    libssl-dev \
+    pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
+
+# ========== Stage 2: 编译构建 ==========
+FROM ubuntu:22.04 AS builder
+
+ARG BUILD_DIR
+ARG PROJECT_NAME
+ARG SOURCE_DIR
+
+# 从 deps 阶段复制预安装的依赖
+COPY --from=deps /usr/include/fastdfs /usr/include/fastcommon
+COPY --from=deps /usr/include/mysql /usr/include/mysql
+COPY --from=deps /usr/include/hiredis /usr/include/hiredis
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git wget \
+    libfastdfs-dev libfastcommon-dev \
+    libmysqlclient-dev libhiredis-dev \
+    libcurl4-openssl-dev libjsoncpp-dev libfaiss-dev \
+    libssl-dev pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置项目名称和构建目录
+ENV PROJECT_NAME=${PROJECT_NAME}
+ENV BUILD_DIR=${BUILD_DIR}
+
+WORKDIR /build/picture_bed
+
+# 复制 CMakeLists.txt 和目录结构（变化频率低，优先缓存）
+COPY CMakeLists.txt ./
+COPY base/ ./base/
+COPY include/ ./include/
+COPY common/ ./common/
+COPY api/ ./api/
+COPY mysql/ ./mysql/
+COPY redis/ ./redis/
+COPY log/ ./log/
+COPY src/ ./src/
+COPY main.cpp ./
+
+# 编译项目
+RUN mkdir -p ${BUILD_DIR} && cd ${BUILD_DIR} && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    make -j$(nproc)
+
+# 查找编译产物的实际路径（动态发现，不硬编码）
+RUN echo "PROJECT_NAME=${PROJECT_NAME}" && \
+    find ${BUILD_DIR} -name "${PROJECT_NAME}" -type f -executable
+
+# 复制 index.html
+COPY index.html ./
+
+# ========== Stage 3: 运行镜像 ==========
+FROM ubuntu:22.04
+
+# 预安装运行时依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfastdfs5 \
+    libfastcommon1 \
+    libmysqlclient21 \
+    libhiredis1.1.0 \
+    libcurl4 \
+    libjsoncpp25 \
+    libfaiss7 \
+    libssl3 \
+    openssl \
+    curl \
+    netcat-openbsd \
+    default-mysql-client \
+    redis-tools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 配置动态链接库路径
+RUN echo "/usr/lib/x86_64-linux-gnu" >> /etc/ld.so.conf.d/custom.conf && ldconfig
+
+# 创建非 root 用户
+RUN useradd -m -s /bin/bash appuser
+
+# 创建应用目录
+RUN mkdir -p /app/log /app/conf /tmp/chunks
+
+# 从 builder 阶段复制所有 build 目录内容
+COPY --from=builder /build/picture_bed/build/ /build_output/
+
+# 复制 index.html（如果存在）
+RUN if [ -f /build_output/index.html ]; then \
+        cp /build_output/index.html /app/; \
+    elif [ -f /build_output/../index.html ]; then \
+        cp /build_output/../index.html /app/; \
+    fi || true
+
+# 复制 FastDFS 客户端配置模板
+COPY AI_YunCunChu-main/conf/client.conf /app/conf/client.conf
+
+# 复制后端配置文件
+COPY tc_http_server.conf /app/tc_http_server.conf
+
+# 复制启动等待脚本
+COPY docker-entrypoint.sh /entrypoint.sh
+
+# 设置权限
+RUN chmod +x /entrypoint.sh && \
+    chown -R appuser:appuser /app /tmp/chunks /build_output 2>/dev/null || true
+
+# 切换用户
+USER appuser
+
+# 工作目录
+WORKDIR /app
+
+# 环境变量
+ENV LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib:$LD_LIBRARY_PATH
+
+# 暴露端口
+EXPOSE 8081
+
+# 健康检查 - 使用端口检测（更可靠，不依赖特定API路径）
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD nc -z localhost 8081 || exit 1
+
+# 使用 entrypoint 脚本进行服务依赖等待和配置
+ENTRYPOINT ["/entrypoint.sh"]
+
+# 默认参数
+CMD ["/app/tc_http_server.conf"]

@@ -6,7 +6,7 @@ using std::string;
 
 #include "DBPool.h"
 #include "CachePool.h"
-#include "json/json.h"
+#include <jsoncpp/json/json.h>
 #include "Logging.h"
 
 #define FILE_NAME_LEN (256)    //文件名字长度

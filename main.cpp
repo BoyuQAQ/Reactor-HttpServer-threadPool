@@ -20,6 +20,7 @@
 #include "AsyncLogging.h"
 #include "ApiUpload.h"
 #include "ApiDealfile.h"
+#include "ApiAi.h"
 // 
 off_t kRollSize = 1 * 1000 * 1000;    // 只设置1M
 static AsyncLogging *g_asyncLog = NULL;
@@ -137,6 +138,11 @@ int main(int argc, char* argv[])
     {
         LOG_ERROR << "ApiInit failed";
         return -1;
+    }
+
+    if(ApiAiInit() < 0)
+    {
+        LOG_WARN << "ApiAiInit failed, AI features may not work properly";
     }
    
     // 检测监听ip和端口

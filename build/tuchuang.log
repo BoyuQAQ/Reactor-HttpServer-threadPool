@@ -34,3 +34,104 @@
 20260306 13:09:17.429414Z ERROR url unknown, url= / - HttpConn.cpp:274
 20260306 13:09:17.429984Z INFO  url: / - HttpConn.cpp:233
 20260306 13:09:17.430003Z ERROR url unknown, url= / - HttpConn.cpp:274
+20260326 03:38:14.519236Z INFO  db_host:127.0.0.1, db_port:3306, db_dbname:cloud_disk_db, db_username:Boyu, db_password:123456 - DBPool.cpp:635
+20260326 03:38:14.551387Z INFO  db_host:127.0.0.1, db_port:3306, db_dbname:cloud_disk_db, db_username:Boyu, db_password:123456 - DBPool.cpp:635
+20260326 03:38:14.587715Z INFO  row_num: 1 - DBPool.cpp:332
+20260326 03:38:14.587748Z INFO  count: 0 - ApiCommon.cpp:199
+20260326 03:38:14.588153Z INFO  server start listen on:For http://%0.0.0.0:8081 - main.cpp:165
+20260326 03:38:14.588166Z INFO  now enter the event loop... - main.cpp:168
+20260326 04:08:16.041261Z INFO  db_host:127.0.0.1, db_port:3306, db_dbname:cloud_disk_db, db_username:Boyu, db_password:123456 - DBPool.cpp:635
+20260326 04:08:16.065442Z INFO  db_host:127.0.0.1, db_port:3306, db_dbname:cloud_disk_db, db_username:Boyu, db_password:123456 - DBPool.cpp:635
+20260326 04:08:16.086987Z INFO  row_num: 1 - DBPool.cpp:332
+20260326 04:08:16.087018Z INFO  count: 0 - ApiCommon.cpp:199
+20260326 04:08:16.087304Z INFO  server start listen on:For http://%0.0.0.0:8081 - main.cpp:165
+20260326 04:08:16.087315Z INFO  now enter the event loop... - main.cpp:168
+20260326 05:06:41.375767Z INFO  url: /api/reg - HttpConn.cpp:233
+20260326 05:06:41.375860Z ERROR parse reg json failed  - ApiRegister.cpp:33
+20260326 05:06:41.375869Z ERROR decodeRegisterJson failed - ApiRegister.cpp:179
+20260326 05:06:41.375928Z INFO  szContent: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:381
+20260326 05:06:41.375958Z INFO  write complete - HttpConn.cpp:490
+20260326 05:12:09.051084Z INFO  url: /api/reg - HttpConn.cpp:233
+20260326 05:12:09.051112Z ERROR parse reg json failed  - ApiRegister.cpp:33
+20260326 05:12:09.051125Z ERROR decodeRegisterJson failed - ApiRegister.cpp:179
+20260326 05:12:09.051137Z INFO  szContent: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:381
+20260326 05:12:09.051175Z INFO  write complete - HttpConn.cpp:490
+20260326 06:20:31.938274Z INFO  url: /api/login - HttpConn.cpp:233
+20260326 06:20:31.938351Z INFO  into - HttpConn.cpp:401
+20260326 06:20:31.938448Z ERROR parse reg json failed  - ApiLogin.cpp:22
+20260326 06:20:31.938464Z ERROR decodeRegisterJson failed - ApiLogin.cpp:204
+20260326 06:20:31.938503Z INFO  into - HttpConn.cpp:496
+20260326 06:20:32.038430Z INFO  conn_uuid: 3, pConn: 0x5F53ED492560 - HttpConn.cpp:516
+20260326 06:20:32.038467Z INFO  send: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:518
+20260326 06:20:32.038516Z INFO  write complete - HttpConn.cpp:490
+20260326 06:29:41.428577Z INFO  url: /api/login - HttpConn.cpp:233
+20260326 06:29:41.428684Z INFO  into - HttpConn.cpp:401
+20260326 06:29:41.428738Z ERROR parse reg json failed  - ApiLogin.cpp:22
+20260326 06:29:41.428744Z ERROR decodeRegisterJson failed - ApiLogin.cpp:204
+20260326 06:29:41.428772Z INFO  into - HttpConn.cpp:496
+20260326 06:29:41.529492Z INFO  conn_uuid: 4, pConn: 0x5F53ED492560 - HttpConn.cpp:516
+20260326 06:29:41.529526Z INFO  send: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:518
+20260326 06:29:41.529568Z INFO  write complete - HttpConn.cpp:490
+20260326 06:38:27.011915Z INFO  url: /api/login - HttpConn.cpp:233
+20260326 06:38:27.011991Z INFO  into - HttpConn.cpp:401
+20260326 06:38:27.012020Z ERROR parse reg json failed  - ApiLogin.cpp:22
+20260326 06:38:27.012023Z ERROR decodeRegisterJson failed - ApiLogin.cpp:204
+20260326 06:38:27.012035Z INFO  into - HttpConn.cpp:496
+20260326 06:38:27.112332Z INFO  conn_uuid: 5, pConn: 0x5F53ED492560 - HttpConn.cpp:516
+20260326 06:38:27.112382Z INFO  send: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:518
+20260326 06:38:27.112441Z INFO  write complete - HttpConn.cpp:490
+20260326 06:38:36.597718Z INFO  url: /api/login - HttpConn.cpp:233
+20260326 06:38:36.597766Z INFO  into - HttpConn.cpp:401
+20260326 06:38:36.597776Z ERROR parse reg json failed  - ApiLogin.cpp:22
+20260326 06:38:36.597790Z ERROR decodeRegisterJson failed - ApiLogin.cpp:204
+20260326 06:38:36.597802Z INFO  into - HttpConn.cpp:496
+20260326 06:38:36.698209Z INFO  conn_uuid: 6, pConn: 0x5F53ED492560 - HttpConn.cpp:516
+20260326 06:38:36.698245Z INFO  send: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:518
+20260326 06:38:36.698291Z INFO  write complete - HttpConn.cpp:490
+20260326 06:49:30.728408Z INFO  url: /api/reg - HttpConn.cpp:233
+20260326 06:49:30.728457Z ERROR parse reg json failed  - ApiRegister.cpp:33
+20260326 06:49:30.728473Z ERROR decodeRegisterJson failed - ApiRegister.cpp:179
+20260326 06:49:30.728487Z INFO  szContent: HTTP/1.1 200 OK
+Connection:close
+Content-Length:11
+Content-Type:application/json;charset=utf-8
+
+{"code":1}
+ - HttpConn.cpp:381
+20260326 06:49:30.728528Z INFO  write complete - HttpConn.cpp:490

@@ -10,7 +10,7 @@
 #include "DBPool.h"
 
 #include "Logging.h"
-#include "json/json.h"
+#include <jsoncpp/json/json.h>
 
 //解析用户注册信息的json包
 /*json数据如下

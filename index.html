@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能云盘系统 (全栈终极版)</title>
+    <!-- 引入 SparkMD5 用于前端计算文件 MD5，实现秒传 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/spark-md5/3.0.2/spark-md5.min.js"></script>
+    <style>
+        /* ================= 基础样式 ================= */
+        :root {
+            --primary-color: #1890ff;
+            --bg-color: #f0f2f5;
+            --border-color: #e8e8e8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            width: 95%;
+            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 650px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 头部和导航 */
+        h2 {
+            margin: 0;
+            padding: 20px;
+            background: #fff;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-nav {
+            display: none;
+            background: #fafafa;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            display: inline-block;
+            padding: 15px 20px;
+            cursor: pointer;
+            color: #555;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+            .nav-tab:hover {
+                color: var(--primary-color);
+            }
+
+            .nav-tab.active {
+                color: var(--primary-color);
+                border-bottom-color: var(--primary-color);
+            }
+
+        .view {
+            display: none;
+            padding: 20px;
+            flex: 1;
+        }
+
+            .view.active {
+                display: block;
+            }
+
+        /* ================= 登录/注册页样式 ================= */
+        .auth-view {
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .auth-box {
+            max-width: 320px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+            .input-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                box-sizing: border-box;
+                outline: none;
+                transition: 0.3s;
+            }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+            .btn:hover {
+                background: #40a9ff;
+            }
+
+        .switch-link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #1890ff;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: underline;
+        }
+
+        /* ================= 主页面 & 分享大厅样式 ================= */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .path-nav {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .upload-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .upload-label {
+            background: #52c41a;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+            .upload-label:hover {
+                background: #73d13d;
+            }
+
+            .upload-label input[type="file"] {
+                display: none;
+            }
+
+        /* 文件列表样式 */
+        .file-list {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow-y: auto;
+            max-height: 450px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .file-item:last-child {
+                border-bottom: none;
+            }
+
+            .file-item:hover {
+                background-color: #e6f7ff;
+            }
+
+        .icon {
+            width: 25px;
+            display: inline-block;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .file-name {
+            color: #333;
+            font-weight: 500;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .right-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-size {
+            color: #888;
+            font-size: 0.9em;
+            width: 80px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .file-pv {
+            color: #fa8c16;
+            font-size: 0.9em;
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+            background: #fff7e6;
+            padding: 2px 5px;
+            border-radius: 4px;
+            border: 1px solid #ffd591;
+        }
+
+        /* 按钮通用样式 */
+        .action-btn {
+            padding: 5px 12px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .share-btn {
+            background: #fa8c16;
+        }
+
+            .share-btn:hover {
+                background: #ff9c3a;
+            }
+
+        .download-btn {
+            background: var(--primary-color);
+        }
+
+            .download-btn:hover {
+                background: #40a9ff;
+            }
+
+        .delete-btn {
+            background: #ff4d4f;
+        }
+
+            .delete-btn:hover {
+                background: #ff7875;
+            }
+
+        .cancel-share-btn {
+            background: #999;
+        }
+
+            .cancel-share-btn:hover {
+                background: #777;
+            }
+
+        .sort-btn {
+            background: #fff;
+            color: #555;
+            border: 1px solid #ccc;
+        }
+
+            .sort-btn:hover {
+                border-color: var(--primary-color);
+                color: var(--primary-color);
+            }
+
+        /* 状态与动画 */
+        .status-box {
+            display: flex;
+            align-items: center;
+            min-height: 30px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            display: none;
+        }
+
+            .spinner.active {
+                display: inline-block;
+            }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>
+            <span>☁️ 企业级云盘系统</span>
+            <span id="user-info" style="font-size: 14px; font-weight: normal; display: none;">
+                欢迎, <span id="username-display" style="font-weight: bold; color: var(--primary-color);"></span> |
+                <a href="#" onclick="logout()" style="color: #ff4d4f; text-decoration: none;">退出登录</a>
+            </span>
+        </h2>
+
+        <!-- 系统导航栏 (登录后显示) -->
+        <div id="app-nav" class="app-nav">
+            <div class="nav-tab active" onclick="switchTab('main-view', this)">📁 我的网盘</div>
+            <div class="nav-tab" onclick="switchTab('share-view', this)">🌍 分享大厅</div>
+        </div>
+
+        <!-- ================= 1. 登录页面 ================= -->
+        <div id="login-view" class="view auth-view active">
+            <div class="auth-box">
+                <h3 style="color: #555; margin-top: 0;">账户登录</h3>
+                <div class="input-group">
+                    <input type="text" id="login-user" placeholder="用户名 (user)">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-pwd" placeholder="密码 (pwd)">
+                </div>
+                <button class="btn" onclick="login()">登 录</button>
+                <div class="status-box" style="justify-content: center;">
+                    <div id="login-spinner" class="spinner"></div>
+                    <span id="login-status"></span>
+                </div>
+                <span class="switch-link" onclick="switchView('reg-view')">没有账号？点击注册</span>
+            </div>
+        </div>
+
+        <!-- ================= 2. 注册页面 ================= -->
+        <div id="reg-view" class="view auth-view">
+            <div class="auth-box">
+                <h3 style="color: #555; margin-top: 0;">新用户注册</h3>
+                <div class="input-group">
+                    <input type="text" id="reg-user" placeholder="用户名 (userName)">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="reg-nick" placeholder="昵称 (nickName)">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="reg-pwd" placeholder="密码 (pwd)">
+                </div>
+                <button class="btn" style="background:#52c41a;" onclick="register()">注 册</button>
+                <div class="status-box" style="justify-content: center;">
+                    <div id="reg-spinner" class="spinner"></div>
+                    <span id="reg-status"></span>
+                </div>
+                <span class="switch-link" onclick="switchView('login-view')">已有账号？返回登录</span>
+            </div>
+        </div>
+
+        <!-- ================= 3. 我的网盘 (主页面) ================= -->
+        <div id="main-view" class="view">
+            <div class="toolbar">
+                <div class="path-nav">当前位置: /我的文件</div>
+
+                <!-- 【这里是新增的 AI 交互框】 -->
+                <div style="display: flex; gap: 10px; margin-left: auto; margin-right: 20px;">
+                    <input type="text" id="ai-search-input" placeholder="✨ 输入你想找的文件内容..." style="padding: 6px 12px; border: 1px solid #722ed1; border-radius: 4px; width: 220px; outline: none;">
+                    <button class="action-btn" style="background: #722ed1;" onclick="aiSearch()">🤖 AI 检索</button>
+                    <button class="action-btn" style="background: #13c2c2;" onclick="setApiKey()">🔑 设 Key</button>
+                </div>
+                <!-- 【新增结束】 -->
+
+                <div class="upload-box">
+                    <label class="upload-label">
+                        <input type="file" id="fileInput" onchange="uploadFile()">
+                        ⬆️ 极速上传
+                    </label>
+                </div>
+            </div>
+
+            <div class="status-box">
+                <div id="main-spinner" class="spinner"></div>
+                <span id="main-status" style="color: #1890ff;"></span>
+            </div>
+
+            <div id="file-list" class="file-list"></div>
+        </div>
+
+        <!-- ================= 4. 分享大厅页面 ================= -->
+        <div id="share-view" class="view">
+            <div class="toolbar">
+                <div class="path-nav">🌍 大家分享的文件</div>
+                <div class="upload-box">
+                    <button class="action-btn sort-btn" onclick="loadShareList('normal')">🕒 最新分享</button>
+                    <button class="action-btn sort-btn" onclick="loadShareList('pvdesc')">🔥 下载排行榜</button>
+                </div>
+            </div>
+
+            <div class="status-box">
+                <div id="share-spinner" class="spinner"></div>
+                <span id="share-status" style="color: #fa8c16;"></span>
+            </div>
+
+            <div id="share-list" class="file-list"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserName = localStorage.getItem('userName') || "";
+        let currentToken = localStorage.getItem('token') || "";
+
+        window.onload = () => {
+            if (currentUserName && currentToken) {
+                loginSuccessUI();
+            } else {
+                switchView('login-view');
+            }
+        };
+
+        // ================= UI 辅助模块 =================
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            setStatus('login', '', 'black', false);
+            setStatus('reg', '', 'black', false);
+        }
+
+        function switchTab(viewId, element) {
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            switchView(viewId);
+
+            if (viewId === 'main-view') loadFileList();
+            if (viewId === 'share-view') loadShareList('normal');
+        }
+
+        function loginSuccessUI() {
+            document.getElementById('username-display').innerText = currentUserName;
+            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('app-nav').style.display = 'block';
+            document.querySelectorAll('.nav-tab')[0].classList.add('active');
+            switchView('main-view');
+            loadFileList();
+        }
+
+        function setStatus(prefix, msg, color, isLoading = false) {
+            const statusEl = document.getElementById(`${prefix}-status`);
+            const spinnerEl = document.getElementById(`${prefix}-spinner`);
+            if (statusEl) { statusEl.innerText = msg; statusEl.style.color = color; }
+            if (spinnerEl) { isLoading ? spinnerEl.classList.add('active') : spinnerEl.classList.remove('active'); }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes == null || bytes === 0) return '0 B';
+            const k = 1024, sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // ================= 账户鉴权模块 =================
+        async function register() {
+            const user = document.getElementById('reg-user').value.trim();
+            const nick = document.getElementById('reg-nick').value.trim();
+            const pwd = document.getElementById('reg-pwd').value.trim();
+
+            if (!user || !pwd) return setStatus('reg', "用户名和密码不能为空！", "red", false);
+            setStatus('reg', "正在注册...", "#1890ff", true);
+
+            try {
+                const response = await fetch('/api/reg', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userName: user, nickName: nick, firstPwd: pwd, phone: "13800000000", email: "test@qq.com" })
+                });
+                const data = await response.json();
+
+                if (response.ok && (data.code == 0 || data.status === "success")) {
+                    setStatus('reg', "注册成功！请返回登录。", "#52c41a", false);
+                    setTimeout(() => switchView('login-view'), 1500);
+                } else throw new Error(data.error || data.message || "注册失败");
+            } catch (error) {
+                setStatus('reg', error.message, "red", false);
+            }
+        }
+
+        async function login() {
+            const user = document.getElementById('login-user').value.trim();
+            const pwd = document.getElementById('login-pwd').value.trim();
+            if (!user || !pwd) return setStatus('login', "用户名和密码不能为空！", "red", false);
+
+            setStatus('login', "正在验证...", "#1890ff", true);
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: user, pwd: pwd })
+                });
+                const data = await response.json();
+
+                if (response.ok && (data.code == 0 || data.token)) {
+                    currentUserName = user;
+                    currentToken = data.token;
+                    localStorage.setItem('userName', currentUserName);
+                    localStorage.setItem('token', currentToken);
+                    loginSuccessUI();
+                } else throw new Error(data.error || data.message || "账号或密码错误");
+            } catch (error) {
+                setStatus('login', "登录失败: " + error.message, "red", false);
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            currentUserName = currentToken = "";
+            document.getElementById('user-info').style.display = 'none';
+            document.getElementById('app-nav').style.display = 'none';
+            document.getElementById('login-pwd').value = "";
+            switchView('login-view');
+        }
+
+        // ================= 视图加载模块 =================
+
+        // 1. 加载【我的网盘】列表
+        async function loadFileList() {
+            const listDiv = document.getElementById('file-list');
+            setStatus('main', "正在同步我的网盘...", "#1890ff", true);
+            listDiv.innerHTML = "";
+
+            try {
+                const payload = { user: currentUserName, token: currentToken, start: 0, count: 100 };
+                const response = await fetch('/api/myfiles?cmd=normal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.status === 401) { alert("登录已过期"); logout(); return; }
+                if (!response.ok) throw new Error(`HTTP 错误 ${response.status}`);
+
+                const data = await response.json();
+                setStatus('main', "", "black", false);
+
+                let filesArray = [];
+                if (Array.isArray(data)) filesArray = data;
+                else if (data.files && Array.isArray(data.files)) filesArray = data.files;
+
+                if (filesArray.length === 0) {
+                    listDiv.innerHTML = '<div class="file-item" style="color:#999; justify-content:center;">您的网盘空空如也，快去上传吧！</div>';
+                    return;
+                }
+
+                // 注意 forEach 里加上 index 参数
+                filesArray.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'file-item';
+                    const actualName = item.file_name || item.filename || item.name || "未知文件";
+                    const actualUrl = item.url || "";
+
+                    const left = document.createElement('div');
+                    left.style.cssText = "display:flex; align-items:center; overflow:hidden;";
+                    // 把奖牌加到 HTML 里
+                    left.innerHTML = `${rankHtml}<span class="icon">🌍</span>
+                                      <div style="display:flex; flex-direction:column; overflow:hidden;">
+                                          <span class="file-name" style="margin-bottom:2px;" title="${actualName}">${actualName}</span>
+                                          <span style="font-size:12px; color:#aaa;">分享者: ${item.user || '匿名'}</span>
+                                      </div>`;
+ 
+
+                    // 右侧：操作区
+                    const right = document.createElement('div');
+                    right.className = 'right-actions';
+
+                    const sizeDiv = document.createElement('div');
+                    sizeDiv.className = 'file-size';
+                    sizeDiv.innerText = formatBytes(item.size || item.filesize);
+
+                    // --- 独立创建每个按钮 ---
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'action-btn download-btn';
+                    downloadBtn.innerText = '⬇️ 下载';
+                    downloadBtn.onclick = (e) => { e.stopPropagation(); downloadFile(actualName, actualUrl); };
+
+                    const shareOrCancelBtn = document.createElement('button');
+                    const isShared = (item.shared_status === 1 || item.shared_status === "1");
+                    if (!isShared) {
+                        shareOrCancelBtn.className = 'action-btn share-btn';
+                        shareOrCancelBtn.innerText = '🔗 分享';
+                        shareOrCancelBtn.onclick = (e) => { e.stopPropagation(); shareFile(actualName, actualMd5); };
+                    } else {
+                        shareOrCancelBtn.className = 'action-btn cancel-share-btn';
+                        shareOrCancelBtn.innerText = '🚫 取消分享';
+                        shareOrCancelBtn.onclick = (e) => { e.stopPropagation(); cancelShare(actualName, actualMd5); };
+                    }
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'action-btn delete-btn';
+                    deleteBtn.innerText = '🗑️ 删除';
+                    deleteBtn.onclick = (e) => { e.stopPropagation(); deleteFile(actualName, actualMd5); };
+
+                    // 按固定顺序组装
+                    right.appendChild(sizeDiv);
+                    right.appendChild(downloadBtn);
+                    right.appendChild(shareOrCancelBtn);
+                    right.appendChild(deleteBtn);
+
+                    row.appendChild(left);
+                    row.appendChild(right);
+                    listDiv.appendChild(row);
+                });
+
+            } catch (error) {
+                setStatus('main', "加载失败: " + error.message, "red", false);
+            }
+        }
+
+        // 2. 加载【分享大厅】列表
+        async function loadShareList(cmd = 'normal') {
+            const listDiv = document.getElementById('share-list');
+            setStatus('share', "正在拉取分享大厅数据...", "#fa8c16", true);
+            listDiv.innerHTML = "";
+
+            try {
+                const payload = { user: currentUserName, token: currentToken, start: 0, count: 100 };
+                const response = await fetch(`/api/sharefiles?cmd=${cmd}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.status === 401) { alert("登录已过期"); logout(); return; }
+                if (!response.ok) throw new Error(`HTTP 错误 ${response.status}`);
+
+                const data = await response.json();
+                setStatus('share', "", "black", false);
+
+                let filesArray = [];
+                if (Array.isArray(data)) filesArray = data;
+                else if (data.files && Array.isArray(data.files)) filesArray = data.files;
+
+                if (filesArray.length === 0) {
+                    listDiv.innerHTML = '<div class="file-item" style="color:#999; justify-content:center;">分享大厅空空如也，快去分享文件吧！</div>';
+                    return;
+                }
+
+                filesArray.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'file-item';
+                    const actualName = item.file_name || item.filename || item.name || "未知文件";
+                    const actualUrl = item.url || "";
+
+                    // 左侧：分享图标 + 文件名 + 分享者
+                    const left = document.createElement('div');
+                    left.style.cssText = "display:flex; align-items:center; overflow:hidden;";
+                    left.innerHTML = `<span class="icon">🌍</span>
+                                          <div style="display:flex; flex-direction:column; overflow:hidden;">
+                                              <span class="file-name" style="margin-bottom:2px;" title="${actualName}">${actualName}</span>
+                                              <span style="font-size:12px; color:#aaa;">分享者: ${item.user || '匿名'}</span>
+                                          </div>`;
+
+                    // 右侧：下载量(PV) + 大小 + 下载按钮
+                    const right = document.createElement('div');
+                    right.className = 'right-actions';
+
+                    const pvDiv = document.createElement('div');
+                    pvDiv.className = 'file-pv';
+                    pvDiv.innerText = `🔥 ${item.pv || 0} 次`;
+
+                    const sizeDiv = document.createElement('div');
+                    sizeDiv.className = 'file-size';
+                    sizeDiv.innerText = formatBytes(item.size || item.filesize);
+
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'action-btn download-btn';
+                    downloadBtn.innerText = '⬇️ 下载';
+                    downloadBtn.onclick = (e) => { e.stopPropagation(); downloadFile(actualName, actualUrl); };
+
+                    const saveBtn = document.createElement('button');
+                    saveBtn.className = 'action-btn';
+                    saveBtn.style.backgroundColor = '#52c41a'; // 绿色
+                    saveBtn.innerText = '💾 转存';
+                    // 传入 actualName 和 actualMd5
+                    saveBtn.onclick = (e) => { e.stopPropagation(); saveSharedFile(actualName, item.md5); };
+
+                    // 组装到右侧操作区 (注意顺序，转存在左，下载在右)
+                    right.appendChild(pvDiv);
+                    right.appendChild(sizeDiv);
+                    right.appendChild(saveBtn);     // 添加转存
+                    right.appendChild(downloadBtn); // 添加下载
+
+                    right.appendChild(pvDiv);
+                    right.appendChild(sizeDiv);
+                    right.appendChild(downloadBtn);
+
+                    row.appendChild(left);
+                    row.appendChild(right);
+                    listDiv.appendChild(row);
+                });
+
+            } catch (error) {
+                setStatus('share', "加载分享大厅失败: " + error.message, "red", false);
+            }
+        }
+
+        // ================= 核心业务逻辑模块 =================
+
+        // 直链下载 (Nginx + FastDFS)
+        async function downloadFile(filename, fileUrl) {
+            if (!fileUrl) {
+                alert("该文件尚未生成下载链接或已损坏！");
+                return;
+            }
+
+            setStatus('main', `正在从存储节点下载 ${filename}...`, "#1890ff", true);
+            setStatus('share', `正在从存储节点下载 ${filename}...`, "#1890ff", true);
+
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) throw new Error(`Nginx 拒绝访问 (状态码: ${response.status})`);
+
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(downloadUrl);
+                document.body.removeChild(a);
+
+                setStatus('main', `✅ 下载完成！`, "#52c41a", false);
+                setStatus('share', `✅ 下载完成！`, "#52c41a", false);
+                setTimeout(() => { setStatus('main', "", ""); setStatus('share', "", ""); }, 2000);
+            } catch (error) {
+                setStatus('main', "下载出错: " + error.message, "red", false);
+                setStatus('share', "下载出错: " + error.message, "red", false);
+            }
+
+
+        }
+
+        // 分享文件
+        async function shareFile(filename, md5) {
+            if (!md5) { alert("文件数据异常 (缺少MD5)，无法分享"); return; }
+            setStatus('main', "正在生成分享链接...", "#1890ff", true);
+            
+            // 判断是否是图片
+            const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg'];
+            const isImage = imageExts.some(ext => filename.toLowerCase().endsWith(ext));
+            
+            if (isImage) {
+                // 图片使用图床分享
+                try {
+                    const response = await fetch('/api/sharepic', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            user: currentUserName, 
+                            token: currentToken, 
+                            md5: md5, 
+                            filename: filename 
+                        })
+                    });
+                    const data = await response.json();
+                    setStatus('main', "", "", false);
+
+                    if (data.code == 0 || data.code === "0") {
+                        alert(`✅ 图片分享成功！\n\n文件：${filename}\n分享链接：${data.url}\n提取码：${data.key}\n\n复制链接或提取码分享给好友吧！`);
+                        loadFileList();
+                    } else {
+                        // 如果图床分享失败，回退到普通分享
+                        await doNormalShare(filename, md5);
+                    }
+                } catch (error) {
+                    // 图床分享失败，回退到普通分享
+                    await doNormalShare(filename, md5);
+                }
+            } else {
+                // 非图片使用普通分享
+                await doNormalShare(filename, md5);
+            }
+        }
+        
+        // 普通分享
+        async function doNormalShare(filename, md5) {
+            try {
+                const response = await fetch('/api/dealfile?cmd=share', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: currentUserName, token: currentToken, md5: md5, filename: filename, file_name: filename })
+                });
+                const data = await response.json();
+
+                if (response.ok && (data.code == 0 || data.code === "000" || data.status === "success")) {
+                    alert(`✅ 成功生成分享！\n\n文件：${filename}\n提取码和链接已存入数据库。\n(请点击顶部导航去"分享大厅"查看)`);
+                    loadFileList();
+                } else {
+                    alert("分享失败: " + (data.error || data.message || "未知错误"));
+                }
+            } catch (error) {
+                setStatus('main', "请求分享接口失败", "red", false);
+            }
+        }
+
+        // 7. 转存分享的文件到我的网盘
+        async function saveSharedFile(filename, md5) {
+            if (!md5) { alert("文件数据异常，无法转存"); return; }
+
+            setStatus('share', `正在转存 ${filename}...`, "#1890ff", true);
+            try {
+                const response = await fetch('/api/dealsharefile?cmd=save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user: currentUserName,
+                        token: currentToken,
+                        md5: md5,
+                        filename: filename,
+                        file_name: filename
+                    })
+                });
+                const data = await response.json();
+                setStatus('share', "", "black", false);
+
+                if (response.ok && (data.code == 0 || data.code === "000" || data.status === "success")) {
+                    alert(`✅ 转存成功！\n\n文件《${filename}》已保存到您的网盘中。\n您可以去"我的网盘"查看。`);
+                } else if (data.code == 5 || data.code == "5") {
+                    // 通常后端会用特定的状态码表示文件已存在
+                    alert(`⚠️ 转存提示：您的网盘中已经存在该文件！`);
+                } else {
+                    alert("转存失败: " + (data.error || data.message || "未知错误"));
+                }
+            } catch (error) {
+                setStatus('share', "请求转存接口失败", "red", false);
+            }
+        }
+
+        // 取消分享
+        async function cancelShare(filename, md5) {
+            if (!md5) return;
+            if (!confirm(`确定要取消分享 "${filename}" 吗？\n取消后，分享大厅将不再展示此文件。`)) return;
+
+            setStatus('main', "正在取消分享...", "#fa8c16", true);
+            try {
+                const response = await fetch('/api/dealfile?cmd=cancel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: currentUserName, token: currentToken, md5: md5, filename: filename, file_name: filename })
+                });
+                const data = await response.json();
+
+                if (response.ok && (data.code == 0 || data.code === "000" || data.status === "success")) {
+                    setStatus('main', `✅ 已取消分享`, "#52c41a", false);
+                    setTimeout(() => loadFileList(), 1000);
+                } else {
+                    setStatus('main', "取消分享失败: " + (data.error || data.message), "red", false);
+                }
+            } catch (error) {
+                setStatus('main', "请求失败", "red", false);
+            }
+        }
+
+        // 删除文件
+        async function deleteFile(filename, md5) {
+            if (!md5) return;
+            if (!confirm(`确定要永久删除 "${filename}" 吗？`)) return;
+
+            setStatus('main', `正在删除 ${filename}...`, "#ff4d4f", true);
+            try {
+                // 【修复】：使用 del 作为后端期望的暗号
+                const response = await fetch('/api/dealfile?cmd=del', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: currentUserName, token: currentToken, md5: md5, filename: filename, file_name: filename })
+                });
+                const data = await response.json();
+
+                if (response.ok && (data.code == 0 || data.code === "000" || data.status === "success")) {
+                    setStatus('main', `✅ 文件已删除`, "#52c41a", false);
+                    setTimeout(() => loadFileList(), 1000);
+                } else {
+                    setStatus('main', "删除失败: " + (data.error || data.message), "red", false);
+                }
+            } catch (error) {
+                setStatus('main', "请求删除失败", "red", false);
+            }
+        }
+
+        // 秒传计算辅助
+        function calculateMD5(file) {
+            return new Promise((resolve, reject) => {
+                const blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+                const chunkSize = 2097152;
+                const chunks = Math.ceil(file.size / chunkSize);
+                let currentChunk = 0;
+                const spark = new SparkMD5.ArrayBuffer();
+                const fileReader = new FileReader();
+
+                fileReader.onload = (e) => {
+                    spark.append(e.target.result);
+                    currentChunk++;
+                    if (currentChunk < chunks) loadNext();
+                    else resolve(spark.end());
+                };
+                fileReader.onerror = () => reject("文件读取错误");
+                function loadNext() {
+                    const start = currentChunk * chunkSize;
+                    const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+                    fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+                }
+                loadNext();
+            });
+        }
+
+        // ================= 分片上传 =================
+        const CHUNK_SIZE = 10 * 1024 * 1024; // 10MB
+
+        async function chunkUpload(file, fileMd5) {
+            const chunkCount = Math.ceil(file.size / CHUNK_SIZE);
+            setStatus('main', `开始分片上传，共 ${chunkCount} 个分片...`, "#1890ff", true);
+
+            // 初始化分片上传
+            const initResponse = await fetch('/api/chunk?cmd=init', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user: currentUserName,
+                    token: currentToken,
+                    filename: file.name,
+                    md5: fileMd5,
+                    size: file.size,
+                    chunk_count: chunkCount
+                })
+            });
+            const initData = await initResponse.json();
+
+            if (initData.code !== 0 && initData.code !== "0") {
+                throw new Error(initData.message || "分片初始化失败");
+            }
+
+            // 解析已上传的分片
+            let uploadedChunks = [];
+            if (initData.uploaded) {
+                uploadedChunks = initData.uploaded.split(',').map(x => parseInt(x)).filter(x => !isNaN(x));
+            }
+
+            // 上传每个分片
+            for (let i = 0; i < chunkCount; i++) {
+                if (uploadedChunks.includes(i)) {
+                    continue; // 跳过已上传的分片
+                }
+
+                const start = i * CHUNK_SIZE;
+                const end = Math.min(start + CHUNK_SIZE, file.size);
+                const chunk = file.slice(start, end);
+
+                setStatus('main', `上传分片 ${i + 1}/${chunkCount}...`, "#fa8c16", true);
+
+                const formData = new FormData();
+                formData.append("user", currentUserName);
+                formData.append("token", currentToken);
+                formData.append("md5", fileMd5);
+                formData.append("index", i);
+                formData.append("file", chunk);
+
+                const uploadResponse = await fetch('/api/chunk?cmd=upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error(`分片 ${i + 1} 上传失败`);
+                }
+
+                uploadedChunks.push(i);
+            }
+
+            // 合并分片
+            setStatus('main', '正在合并分片...', "#1890ff", true);
+            const mergeResponse = await fetch('/api/chunk?cmd=merge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user: currentUserName,
+                    token: currentToken,
+                    md5: fileMd5,
+                    filename: file.name
+                })
+            });
+            const mergeData = await mergeResponse.json();
+
+            if (mergeData.code !== 0 && mergeData.code !== "0") {
+                throw new Error(mergeData.message || "分片合并失败");
+            }
+
+            return mergeData;
+        }
+
+        // 极速上传核心逻辑
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) return;
+            const file = fileInput.files[0];
+
+            try {
+                setStatus('main', `正在扫描文件指纹...`, "#1890ff", true);
+                const fileMd5 = await calculateMD5(file);
+
+                setStatus('main', `正在向云端匹配指纹...`, "#fa8c16", true);
+                const md5Response = await fetch('/api/md5', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: currentUserName, token: currentToken, md5: fileMd5, filename: file.name, file_name: file.name })
+                });
+                const md5Data = await md5Response.json();
+
+                if (md5Response.ok && (md5Data.code == 0 || md5Data.code == 5 || md5Data.status === "success")) {
+                    setStatus('main', "⚡ 秒传成功！(云端已存在相同文件)", "#52c41a", false);
+                    fileInput.value = "";
+                    setTimeout(() => loadFileList(), 1000);
+                    return;
+                }
+
+                // 判断是否使用分片上传
+                if (file.size > CHUNK_SIZE) {
+                    // 使用分片上传
+                    await chunkUpload(file, fileMd5);
+                    setStatus('main', "✅ 文件上传成功！(分片上传)", "#52c41a", false);
+                    loadFileList();
+                } else {
+                    // 普通上传
+                    setStatus('main', `正在全速上传: ${file.name} ...`, "#1890ff", true);
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("user", currentUserName);
+                    formData.append("token", currentToken);
+                    formData.append("md5", fileMd5);
+
+                    const response = await fetch('/api/upload', { method: 'POST', body: formData });
+
+                    if (response.status === 401) { alert("登录过期"); logout(); return; }
+                    if (!response.ok) throw new Error(`HTTP 错误: ${response.status}`);
+
+                    const data = await response.json();
+                    if (data.code == 0 || data.status === "success") {
+                        setStatus('main', "✅ 文件上传成功！", "#52c41a", false);
+                        loadFileList();
+                    } else {
+                        throw new Error(data.error || data.message || "后端返回异常");
+                    }
+                }
+
+            } catch (error) {
+                setStatus('main', "❌ 操作失败: " + error.message, "red", false);
+            } finally {
+                fileInput.value = "";
+            }
+        }
+
+        // ================= AI 智能搜索 =================
+        async function aiSearch() {
+            const searchText = document.getElementById('ai-search-input').value.trim();
+            if (!searchText) {
+                alert("请输入搜索内容");
+                return;
+            }
+
+            try {
+                setStatus('main', "🔍 AI 正在搜索...", "#1890ff", true);
+                
+                const response = await fetch('/api/ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cmd: "search",
+                        user: currentUserName,
+                        token: currentToken,
+                        search: searchText
+                    })
+                });
+
+                if (!response.ok) throw new Error("搜索失败");
+
+                const data = await response.json();
+                if (data.code == 0) {
+                    displayAISearchResults(JSON.parse(data.results));
+                } else {
+                    throw new Error(data.message || "搜索出错");
+                }
+            } catch (error) {
+                setStatus('main', "❌ 搜索失败: " + error.message, "red", false);
+            }
+        }
+
+        // 优雅地渲染 AI 搜索结果
+        function displayAISearchResults(results) {
+            const listDiv = document.getElementById('file-list');
+            // 清空列表，加上 AI 专属的紫色标题头部
+            listDiv.innerHTML = '<div style="padding: 10px 15px; background: #f9f0ff; color: #722ed1; font-weight: bold; border-bottom: 1px solid #e8e8e8; font-size: 13px;">✨ AI 智能语义检索结果</div>';
+
+            if (!results || results.length === 0) {
+                listDiv.innerHTML += '<div class="file-item" style="color:#999; justify-content:center;">AI 没有找到相关内容的文件</div>';
+                return;
+            }
+
+            results.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'file-item';
+                const actualName = item.file_name || item.filename || item.name;
+
+                // 左侧：AI 专属排版，带摘要
+                const left = document.createElement('div');
+                left.style.cssText = "display:flex; flex-direction:column; overflow:hidden; flex:1;";
+                left.innerHTML = `
+                    <div style="display:flex; align-items:center;">
+                        <span class="icon">📄</span>
+                        <span class="file-name" style="color: #722ed1; font-weight: bold;" title="${actualName}">${actualName}</span>
+                    </div>
+                    <span style="font-size:12px; color:#666; margin-top:5px; padding-left:35px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                        💡 摘要: ${item.description || '暂无摘要'}
+                    </span>`;
+
+                // 右侧：匹配度 + 下载按钮
+                const right = document.createElement('div');
+                right.className = 'right-actions';
+
+                // AI 匹配度分数
+                const scoreDiv = document.createElement('div');
+                scoreDiv.style.cssText = "color: #fa8c16; font-size: 12px; font-weight: bold; margin-right: 10px;";
+                // 如果后端传来的是 0.85，前端显示 85.0%
+                scoreDiv.innerText = `匹配度: ${item.score ? (item.score * 100).toFixed(1) : 100}%`;
+
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'action-btn download-btn';
+                downloadBtn.innerText = '⬇️ 下载';
+                // 注意：如果 AI 接口没有返回 url 直链，这里你需要配合后端调整下载逻辑
+                downloadBtn.onclick = (e) => { e.stopPropagation(); downloadFile(actualName, item.url); };
+
+                right.appendChild(scoreDiv);
+                right.appendChild(downloadBtn);
+
+                row.appendChild(left);
+                row.appendChild(right);
+                listDiv.appendChild(row);
+            });
+
+            // 恢复状态栏
+            setStatus('main', "", "black", false);
+
+            // 增加一个返回网盘的按钮
+            const backBtn = document.createElement('div');
+            backBtn.className = 'file-item';
+            backBtn.style.cssText = "justify-content:center; color: #1890ff; font-weight:bold; background: #fafafa;";
+            backBtn.innerText = "⬅️ 退出 AI 搜索，返回我的网盘";
+            backBtn.onclick = () => loadFileList();
+            listDiv.appendChild(backBtn);
+        }
+
+        async function setApiKey() {
+            const apiKey = prompt("请输入阿里百炼 API Key:");
+            if (!apiKey) return;
+
+            try {
+                const response = await fetch('/api/ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cmd: "set_apikey",
+                        user: currentUserName,
+                        token: apiKey
+                    })
+                });
+
+                const data = await response.json();
+                if (data.code == 0) {
+                    alert("✅ API Key 设置成功！");
+                } else {
+                    alert("❌ 设置失败: " + data.message);
+                }
+            } catch (error) {
+                alert("❌ 设置失败: " + error.message);
+            }
+        }
+    </script>
+
+</body>
+</html>

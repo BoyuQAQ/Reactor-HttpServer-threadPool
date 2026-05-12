@@ -3,7 +3,7 @@
 #include <string>
 #include "redis_keys.h"
 #include "Common.h"
-#include "json/json.h"
+#include <jsoncpp/json/json.h>
 #include "Logging.h"
 #include "DBPool.h"
 #include "CachePool.h"
